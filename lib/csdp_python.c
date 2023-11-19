@@ -3,14 +3,7 @@
 #include <math.h>
 #include "declarations.h"
 
-double solve_sdp_python(k, block_num, block_sizes, a, rows, mat_inds, mat_vals)
-int k;
-int block_num;
-int *block_sizes;
-double *a;
-int rows;
-int *mat_inds;
-double *mat_vals;
+double solve_sdp_python(int k, int block_num, int *block_sizes, double *a, int rows, int *mat_inds, double *mat_vals)
 {
 	int ret;
 	int n;
