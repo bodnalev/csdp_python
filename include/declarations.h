@@ -190,7 +190,13 @@ void free_prob(int n, int k, struct blockmatrix C, double *a,
 	       struct constraintmatrix *constraints, struct blockmatrix X,
 	       double *y, struct blockmatrix Z);
 
-int from_sparse_data(int k, int nblocks, int *block_sizes, int rows, int *mat_inds, double *mat_vals, int *pn, struct blockmatrix *pC, struct constraintmatrix **pconstraints, int printlevel);
+int from_sparse_data(int k, int nblocks, int *block_sizes, int rows, 
+					 int *mat_inds, double *mat_vals, int *pn, 
+					 struct blockmatrix *pC, 
+					 struct constraintmatrix **pconstraints, 
+					 int printlevel);
+
+void test_sdp();
 
 int sdp(int n, int k, struct blockmatrix C, double *a, double constant_offset,
 	struct constraintmatrix *constraints, struct sparseblock **byblocks,
@@ -213,7 +219,8 @@ int easy_sdp(int n, int k, struct blockmatrix C, double *a,
 	     struct blockmatrix *pX, double **py, struct blockmatrix *pZ,
 	     double *ppobj, double *pdobj);
 
-double solve_sdp_python(int k, int block_num, int *block_sizes, double *a, int rows, int *mat_inds, double *mat_vals);
+double solve_sdp_python(int k, int block_num, int *block_sizes, 
+						double *a, int rows, int *mat_inds, double *mat_vals);
 
 int checkconstraints(int n, int k, struct blockmatrix C,
 		     struct constraintmatrix *constraints, int printlevel);

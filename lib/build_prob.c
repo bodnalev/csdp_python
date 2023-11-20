@@ -12,7 +12,6 @@
 void countentry();
 int addentry();
 
-
 int from_sparse_data(k,nblocks,block_sizes,rows,mat_inds,mat_vals,pn,pC,pconstraints,printlevel)
 int k; 
 int nblocks; 
@@ -39,8 +38,6 @@ int printlevel;
 	struct sparseblock *p;
 	int *isdiag;
 	double *tempdiag;
-	
-	
 	
 	/*
 	* Number of blocks.
@@ -96,7 +93,7 @@ int printlevel;
 	*pn=0;
 	for (blk=1; blk<=nblocks; blk++)
 	{
-		blksz=block_sizes[blk];
+		blksz=block_sizes[blk-1];
 		*pn=*pn+abs(blksz);
 		if (blksz < 0)
 		{
@@ -142,6 +139,7 @@ int printlevel;
 	* mat_inds,mat_vals
 	*/
 	
+	
 	for (ii=0; ii<rows; ii++)
 	{
 		matno = mat_inds[4*ii];
@@ -153,16 +151,18 @@ int printlevel;
 		/*
 		* Check the validity of these values.
 		*/
+		
 		if ((matno < 0) || (matno > k) ||
 		(blkno<1) || (blkno>nblocks) ||
 		(indexi < 1) || (indexi > pC->blocks[blkno].blocksize) ||
 		(indexj < 1) || (indexj > pC->blocks[blkno].blocksize))
 		{
 			if (printlevel >= 1)
-				printf("Incorect SDPA. Bad values in row: %d\n", ii);
+				printf("Incorect SDPA. Bad values in line: %d %d %d %d %e \n",matno,blkno,indexi,indexj,ent);
 			free(isdiag);
 			return(1);
 		};
+		
 		if (matno != 0)
 		{
 			if (ent != 0.0)
@@ -381,170 +381,5 @@ int printlevel;
 	return(0);
 }
 
-void countentry(constraints,matno,blkno,blocksize)
-     struct constraintmatrix *constraints;
-     int matno;
-     int blkno;
-     int blocksize;
-{
-  struct sparseblock *p;
-  struct sparseblock *q;
-  
-  p=constraints[matno].blocks;
 
-  if (p == NULL)
-    {
-      /*
-       * We haven't yet allocated any blocks.
-       */
-      p=(struct sparseblock *)malloc(sizeof(struct sparseblock));
-      if (p==NULL)
-	{
-          printf("Storage allocation failed!\n");
-	  exit(205);
-	};
-      p->constraintnum=matno;
-      p->blocknum=blkno;
-      p->numentries=1;
-      p->next=NULL;
-      p->entries=NULL;
-      p->iindices=NULL;
-      p->jindices=NULL;
-      p->blocksize=blocksize;
-      constraints[matno].blocks=p;
-    }
-  else
-    {
-      /*
-       * We have some existing blocks.  See whether this block is already
-       * in the chain.
-       */
-
-      while ((p->next) != NULL)
-	{
-	  if (p->blocknum == blkno)
-	    {
-	      /*
-	       * Found the right block.
-	       */
-	      p->numentries=p->numentries+1;
-	      return;
-	    };
-	  p=p->next;
-	};
-      /*
-       * If we get here, we still have to check the last block in the
-       * chain.
-       */
-      if (p->blocknum == blkno)
-	{
-	  /*
-	   * Found the right block.
-	   */
-	  p->numentries=p->numentries+1;
-	  return;
-	};
-      /*
-       * If we get here, then the block doesn't exist yet.
-       */
-      q=(struct sparseblock *)malloc(sizeof(struct sparseblock));
-      if (q==NULL)
-	{
-          printf("Storage allocation failed!\n");
-	  exit(205);
-	};
-      /*
-       * Fill in information for this block.
-       */
-      q->blocknum=blkno;
-      q->constraintnum=matno;
-      q->numentries=1;
-      q->next=NULL;
-      q->entries=NULL;
-      p->iindices=NULL;
-      p->jindices=NULL;
-      q->blocksize=blocksize;
-      /*
-       * Now link it into the list.
-       */
-      p->next=q;
-    };
-
-}
-
-int addentry(constraints,matno,blkno,indexi,indexj,ent)
-     struct constraintmatrix *constraints;
-     int matno;
-     int blkno;
-     int indexi;
-     int indexj;
-     double ent;
-{
-  struct sparseblock *p;
-  int itemp;
-    
-  /*
-   * Arrange things so that indexi <= indexj.
-   */
-
-  if (indexi > indexj)
-    {
-      itemp=indexi;
-      indexi=indexj;
-      indexj=itemp;
-    };
-
-  /* 
-   * Find the appropriate block.
-   */
-  
-  p=constraints[matno].blocks;
-  
-  if (p == NULL)
-    {
-      printf("Internal Error in readprob.c !\n");
-      exit(206);
-    }
-  else
-    {
-      /*
-       * We have some existing blocks.  See whether this block is already
-       * in the chain.
-       */
-
-      while (p != NULL)
-	{
-	  if (p->blocknum == blkno)
-	    {
-	      /*
-	       * Found the right block. 
-	       */
-
-	      p->numentries=(p->numentries)+1;
-	      p->entries[(p->numentries)]=ent;
-	      p->iindices[(p->numentries)]=indexi;
-	      p->jindices[(p->numentries)]=indexj;
-
-              /*
-               * We've successfully added the entry.
-               */
-              
-	      return(0);
-	    };
-	  p=p->next;
-	};
-      /*
-       * If we get here, we have an internal error.
-       */
-      printf("Internal Error in CSDP readprob.c !\n");
-      exit(206);
-    };
-
-  /*
-   * Everything is good, so return 0.
-   */
-
-  return(0);
-
-}
 
