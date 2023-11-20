@@ -6,8 +6,6 @@
 #include <stdlib.h>
 #include "declarations.h"
 
-void skip_to_end_of_line();
-
 int read_sol(fname,n,k,C,pX,py,pZ)
      char *fname;
      int n;
@@ -65,9 +63,6 @@ int read_sol(fname,n,k,C,pX,py,pZ)
 	  return(1);
 	};
     };
-
-
-  skip_to_end_of_line(fid);
 
   /*
    *  Initialize X and Z to 0.
