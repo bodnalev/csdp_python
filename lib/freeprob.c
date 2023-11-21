@@ -3,6 +3,7 @@
  */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include "declarations.h"
 
 void free_prob(n,k,C,a,constraints,X,y,Z)
@@ -18,13 +19,16 @@ void free_prob(n,k,C,a,constraints,X,y,Z)
   int i;
   struct sparseblock *ptr;
   struct sparseblock *oldptr;
-
+	
   /*
    * First, free the vectors of doubles.
    */
-
+	
+	
   free(y);
+	
   free(a);
+	
 
   /*
    * Now, the block matrices.
@@ -45,7 +49,6 @@ void free_prob(n,k,C,a,constraints,X,y,Z)
 	  /*
 	   * Get rid of constraint i.
 	   */
-	  
 	  ptr=constraints[i].blocks;
 	  while (ptr != NULL)
 	    {
@@ -60,7 +63,6 @@ void free_prob(n,k,C,a,constraints,X,y,Z)
       /*
        * Finally, free the constraints array.
        */
-
       free(constraints);
     };
 
