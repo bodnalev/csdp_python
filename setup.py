@@ -1,33 +1,30 @@
-from distutils.command.sdist import sdist
-from distutils.errors import DistutilsExecError
-
-from setuptools import setup  
-
-
-class sdist_make(sdist):
-	def run(self):
-		try:
-			self.spawn(['./csdp/Makefile'])
-		except DistutilsExecError:
-			self.warn('Failed to create the binaries')
-		super().run()
+from setuptools import setup, Extension
+import glob
 
 with open("README.md", "r") as fp:
-	long_desc = fp.read()
+    long_desc = fp.read()
+
+source_files = glob.glob("./src/*.c")
 
 setup(
 	name='csdpy',
 	version='0.1',
 	author="Levente Bodnar",
 	author_email="bodnalev@gmail.com",
-	tests_require=["pytest"],
 	description="Python wrapper for CSDP",
 	long_description_content_type='text/markdown',
 	long_description=long_desc,
 	license="EPL",
-	py_modules=['csdpy'],
-    python_requires='>=3.6', 
-	cmdclass={
-		'sdist': sdist_make
-	}
+    python_requires='>=3.6',
+	ext_modules = [Extension("csdpy", 
+							source_files, 
+							include_dirs=["./include"], 
+							extra_compile_args=[
+								"-m64", "-march=native", "-mtune=native", "-Ofast", "-fPIC", 
+								"-fopenmp", "-ansi", "-Wall", "-DBIT64", "-DUSEOPENMP", "-std=c99", 
+								"-DSETNUMTHREADS", "-DUSESIGTERM", "-DUSEGETTIME", "-I../include", "-g"],
+							extra_link_args=[
+								"-L../src", "-llapack", "-lblas", "-lm", "-lgomp"
+							])
+				  ]
 )

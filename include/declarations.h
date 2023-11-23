@@ -13,6 +13,7 @@
 #include "index.h"
 #include "blockmat.h"
 #include "parameters.h"
+#include <Python.h>
 
 /*
   Our own routines.
@@ -190,14 +191,6 @@ void free_prob(int n, int k, struct blockmatrix C, double *a,
 	       struct constraintmatrix *constraints, struct blockmatrix X,
 	       double *y, struct blockmatrix Z);
 
-int from_sparse_data(int k, int nblocks, int *block_sizes, int rows, 
-					 int *mat_inds, double *mat_vals, int *pn, 
-					 struct blockmatrix *pC, 
-					 struct constraintmatrix **pconstraints, 
-					 int printlevel);
-
-void test_sdp();
-
 int sdp(int n, int k, struct blockmatrix C, double *a, double constant_offset,
 	struct constraintmatrix *constraints, struct sparseblock **byblocks,
 	struct constraintmatrix fill, struct blockmatrix X, double *y, 
@@ -219,9 +212,6 @@ int easy_sdp(int n, int k, struct blockmatrix C, double *a,
 	     struct blockmatrix *pX, double **py, struct blockmatrix *pZ,
 	     double *ppobj, double *pdobj);
 
-double solve_sdp_python(int k, int block_num, int *block_sizes, 
-						double *a, int rows, int *mat_inds, double *mat_vals);
-
 int checkconstraints(int n, int k, struct blockmatrix C,
 		     struct constraintmatrix *constraints, int printlevel);
 
@@ -237,6 +227,18 @@ void tweakgap(int n, int k, double *a, struct constraintmatrix *constraints,
 int bisect_(int *n, double *eps1, double *d, double *e, double *e2,
 	    double *lb, double *ub, int *mm, int *m, double *w, int *ind, 
 	    int *ierr, double *rv4, double *rv5);
+
+/*
+Python wrapper methods
+*/
+
+int from_sparse_data(int k, int nblocks, int *block_sizes, int rows, 
+					 int *mat_inds, double *mat_vals, int *pn, 
+					 struct blockmatrix *pC, 
+					 struct constraintmatrix **pconstraints, 
+					 int printlevel);
+
+PyObject* c_solve_sdp(PyObject* self, PyObject* args);
 
 /*
   BLAS and LINPACK stuff.
