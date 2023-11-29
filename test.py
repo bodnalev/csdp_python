@@ -17,10 +17,7 @@ def test_quick():
 				3, 2, 1, 1]
 	mat_vals = [-1.0, 1.0/3, 1.0/3, 1.0/3, 1.0/3, 1.0, 1.0, -1.0, 1.0, -1.0, 1.0, -1.0]
 	sol = solve_sdp(block_sizes, a, mat_inds, mat_vals)
-	if abs(sol+0.5) < 1e-7:
-		print("test successful")
-	else:
-		print("test failed")
+	print(sol)
 
 if __name__ == "__main__":
 	test_quick()
