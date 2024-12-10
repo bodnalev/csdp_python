@@ -21,7 +21,7 @@ setup(
         source_files, 
         include_dirs=["./include"], 
         extra_compile_args=[
-            "-m64", "-march=native", "-mtune=native", "-O3 -ffast-math", "-fPIC",
+            "-m64", "-march=native", "-mtune=native", "-O3", "-ffast-math", "-fPIC",
             "-fopenmp", "-Wall", "-DBIT64", "-DUSEOPENMP", "-std=c99",
             "-DSETNUMTHREADS", "-DUSESIGTERM", "-DUSEGETTIME", "-I../include", "-g"
         ],
