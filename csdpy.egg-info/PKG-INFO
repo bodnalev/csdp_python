@@ -2,11 +2,9 @@ Metadata-Version: 2.1
 Name: csdpy
 Version: 0.1
 Summary: Python wrapper for CSDP
-Home-page: UNKNOWN
 Author: Levente Bodnar
 Author-email: bodnalev@gmail.com
 License: EPL
-Platform: UNKNOWN
 Requires-Python: >=3.6
 Description-Content-Type: text/markdown
 License-File: LICENSE
@@ -41,4 +39,3 @@ problems.  This project is a C code for SDP that uses BLAS and LAPACK
 subroutines.  The algorithm is a predictor-corrector version of the
 primal-dual barrier method of Helmberg, Rendl, Vanderbei, and
 Wolkowicz.
-

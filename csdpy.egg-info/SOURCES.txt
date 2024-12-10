@@ -4,6 +4,7 @@ AUTHORS
 LICENSE
 Makefile
 README.md
+param.csdp
 setup.py
 test.py
 ./src/Fnorm.c
