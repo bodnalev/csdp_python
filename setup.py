@@ -1,5 +1,9 @@
 from setuptools import setup, Extension
 import glob
+import os, sys
+
+if sys.platform == "darwin":
+    os.environ["CC"] = "/opt/homebrew/opt/llvm/bin/clang"
 
 with open("README.md", "r") as fp:
     long_desc = fp.read()
