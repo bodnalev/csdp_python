@@ -51,7 +51,6 @@ csdpy.egg-info/SOURCES.txt
 csdpy.egg-info/dependency_links.txt
 csdpy.egg-info/top_level.txt
 dist/csdpy-0.1-cp310-cp310-linux_x86_64.whl
-dist/csdpy-0.1.tar.gz
 include/blockmat.h
 include/declarations.h
 include/index.h

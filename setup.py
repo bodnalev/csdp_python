@@ -2,8 +2,11 @@ from setuptools import setup, Extension
 import glob
 import os, sys
 
+lomp = "-lgomp"
+
 if sys.platform == "darwin":
     os.environ["CC"] = "/opt/homebrew/opt/llvm/bin/clang"
+    lomp = "-lomp"
 
 with open("README.md", "r") as fp:
     long_desc = fp.read()
@@ -31,7 +34,7 @@ setup(
         ],
         extra_link_args=[
             "-L/opt/homebrew/opt/libomp/lib",
-            "-L../src", "-llapack", "-lblas", "-lm", "-lgomp"
+            "-L../src", "-llapack", "-lblas", "-lm", lomp
         ]
     )]
 )
